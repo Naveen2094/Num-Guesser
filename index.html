@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>Futuristic AI Guesser</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Fira+Code&display=swap" rel="stylesheet" />
+
+<style>
+/* ---------- 1. COLOR THEMES ---------- */
+:root{
+  --accent:#00ffe1;
+  --accent2:#00ff99;
+  --bg:#0a0a0a;
+}
+body.theme-red    {--accent:#ff0066;--accent2:#ffdd33;--bg:#140012;}
+body.theme-purple {--accent:#b56cff;--accent2:#7effe6;--bg:#12072a;}
+
+/* ---------- 2. BASE RESET ---------- */
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Fira Code',monospace;}
+
+/* ---------- 3. THEME SWATCH BAR ---------- */
+.theme-bar{
+  position:fixed;top:1rem;right:1rem;display:flex;gap:.6rem;z-index:20;
+}
+.theme-swatch{
+  width:30px;height:30px;border-radius:50%;cursor:pointer;transition:.35s;
+  box-shadow:0 0 8px #0006,inset 0 0 4px #0008;
+  border:2px solid #fff4;
+}
+.theme-swatch:hover,.theme-swatch.active{
+  transform:scale(1.2) rotate(12deg);
+  box-shadow:0 0 12px var(--accent);
+  border-color:var(--accent);
+}
+.theme-cyan   {background:#00ffe1;}
+.theme-magenta{background:#ff0066;}
+.theme-purple2{background:#b56cff;}
+
+/* ---------- 4. LAYOUT ---------- */
+body{
+  height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:var(--bg);color:#eee;overflow:hidden;
+}
+h1{
+  font-family:'Orbitron',sans-serif;font-size:2.6rem;color:var(--accent);
+  text-shadow:0 0 8px var(--accent);animation:pulse 3s ease-in-out infinite,
+                                        tilt 6s ease-in-out infinite alternate;
+}
+@keyframes pulse{0%,100%{text-shadow:0 0 6px var(--accent);}50%{text-shadow:0 0 22px var(--accent);}}
+@keyframes tilt {0%,100%{transform:rotate(-1deg);}50%{transform:rotate(1deg);}}
+
+/* ----- panel ----- */
+.panel{
+  background:#111418cc;border:1px solid color-mix(in srgb,var(--accent) 40%,transparent);
+  border-radius:20px;padding:2rem;backdrop-filter:blur(12px);
+  box-shadow:0 0 20px color-mix(in srgb,var(--accent) 45%,transparent);
+  display:flex;flex-direction:column;align-items:center;gap:1.2rem;
+  width:clamp(280px,90vw,500px);transition:.4s;
+}
+.panel:hover{transform:translateY(-4px);box-shadow:0 0 35px var(--accent);}
+
+/* ----- inputs & buttons ----- */
+select,button{
+  padding:.7rem 1.1rem;border:none;border-radius:12px;font-size:1rem;font-weight:600;
+  cursor:pointer;transition:.3s;width:100%;
+}
+select{background:#1e1e1e;color:#eee;}
+button{
+  background:var(--accent);color:#111;text-shadow:0 0 4px #0005;
+}
+button:hover{
+  transform:translateY(-2px);box-shadow:0 8px 15px color-mix(in srgb,var(--accent) 60%,transparent);
+}
+.controls{display:flex;gap:.6rem;width:100%;}
+.controls button{flex:1;}
+
+/* ----- dynamic text ----- */
+#guess{
+  font-size:2.3rem;color:var(--accent2);font-family:'Orbitron',sans-serif;
+  text-shadow:0 0 8px var(--accent2);height:3rem;display:flex;align-items:center;justify-content:center;
+  min-height:48px;
+}
+
+/* ---------- 5. PARTICLE BACKGROUND ---------- */
+.particle{
+  position:absolute;width:6px;height:6px;border-radius:50%;background:var(--accent);opacity:.8;
+  animation:float 10s linear infinite;
+}
+.particle::after{content:'';position:absolute;inset:0;border-radius:50%;background:inherit;filter:blur(4px);}
+@keyframes float{
+  0%{transform:translateY(100vh) scale(.4);}
+  100%{transform:translateY(-10vh) scale(1.25);}
+}
+</style>
+</head>
+
+<body>
+
+<!-- Modern Theme Picker (without blue) -->
+<div class="theme-bar">
+  <div class="theme-swatch theme-cyan"    data-theme=""></div>
+  <div class="theme-swatch theme-magenta" data-theme="red"></div>
+  <div class="theme-swatch theme-purple2" data-theme="purple"></div>
+</div>
+
+<h1>AI Number Guesser</h1>
+
+<div class="panel">
+    <label>Select difficulty</label>
+    <select id="difficulty">
+        <option value="easy">Easy (1‑50)</option>
+        <option value="medium" selected>Medium (1‑100)</option>
+        <option value="hard">Hard (1‑1000)</option>
+    </select>
+
+    <button id="start">Start Game</button>
+
+    <div id="status">Think of a number and hit Start!</div>
+    <div id="guess"></div>
+
+    <div class="controls">
+        <button id="low" disabled>Too Low</button>
+        <button id="correct" disabled>Correct</button>
+        <button id="high" disabled>Too High</button>
+    </div>
+</div>
+
+<script>
+/* ---------- 1. PARTICLES ---------- */
+for(let i=0;i<70;i++){
+  const p=document.createElement('div');
+  p.className='particle';
+  p.style.left=Math.random()*100+'vw';
+  p.style.animationDelay=Math.random()*10+'s';
+  p.style.animationDuration=5+Math.random()*8+'s';
+  document.body.appendChild(p);
+}
+
+/* ---------- 2. ELEMENT HOOKS ---------- */
+const diffSel=document.getElementById('difficulty'),
+      startBtn=document.getElementById('start'),
+      statusEl=document.getElementById('status'),
+      guessEl=document.getElementById('guess'),
+      lowBtn=document.getElementById('low'),
+      highBtn=document.getElementById('high'),
+      correctBtn=document.getElementById('correct');
+
+let low,high,guess,tries;
+
+/* ---------- 3. AUDIO ---------- */
+const sndBeep   = new Audio('beep.mp3'),
+      sndWin    = new Audio('success.mp3');
+sndBeep.volume  = .25;
+sndWin.volume   = .4;
+
+/* ---------- 4. SPEECH ---------- */
+function speak(txt){
+  if(!('speechSynthesis' in window)) return;
+  const u = new SpeechSynthesisUtterance(txt);
+  u.rate=1.08;u.pitch=1.2;
+  speechSynthesis.speak(u);
+}
+
+/* ---------- 5. GAME LOGIC ---------- */
+function setRange(){
+  switch(diffSel.value){
+    case 'easy':   low=1;high=50;break;
+    case 'hard':   low=1;high=1000;break;
+    default:       low=1;high=100;
+  }
+}
+
+startBtn.onclick = ()=>{
+  setRange();
+  tries=0;
+  statusEl.textContent='AI is guessing...';
+  startBtn.disabled=true;
+  lowBtn.disabled=highBtn.disabled=correctBtn.disabled=false;
+  speak('Let me guess your number');
+  nextGuess();
+};
+
+function nextGuess(){
+  if(low>high){
+    guessEl.textContent='I give up 🤯';
+    statusEl.textContent='Play again?';
+    startBtn.disabled=false;
+    lowBtn.disabled=highBtn.disabled=correctBtn.disabled=true;
+    return;
+  }
+  guess=Math.floor((low+high)/2);
+  tries++;
+  sndBeep.currentTime=0; sndBeep.play();
+  guessEl.textContent=`Is it ${guess}?`;
+  speak(`Is it ${guess}?`);
+}
+
+lowBtn.onclick    = ()=>{low=guess+1; flash(lowBtn);    nextGuess();};
+highBtn.onclick   = ()=>{high=guess-1;flash(highBtn);   nextGuess();};
+correctBtn.onclick= ()=>{
+  sndWin.play();
+  guessEl.textContent=`🎉 It was ${guess}!`;
+  statusEl.textContent=`Guessed in ${tries} tries.`;
+  flash(correctBtn);
+  speak(`Yay! I guessed it in ${tries} tries`);
+  startBtn.disabled=false;
+  lowBtn.disabled=highBtn.disabled=correctBtn.disabled=true;
+};
+
+/* button pop animation */
+function flash(btn){
+  btn.animate([{transform:'scale(1)'},{transform:'scale(1.18)'},{transform:'scale(1)'}],{duration:320});
+}
+
+/* ---------- 6. THEME PICKER ---------- */
+document.querySelectorAll('.theme-swatch').forEach(btn=>{
+  btn.onclick = ()=>{
+    document.body.className='theme-'+btn.dataset.theme;
+    document.querySelectorAll('.theme-swatch').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+  };
+});
+</script>
+</body>
+</html>
