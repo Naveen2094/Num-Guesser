@@ -33,7 +33,11 @@ The **Futuristic AI Number Guesser** is an intelligent web-based game where play
 - Learns from your guesses and patterns (based on settings).
 
 ## 📸 Screenshots
+![Neon Cyan](Screenshots/NeonCyan.png)
 
+![Neon Red](Screenshots/NeonRed.png)
+
+![Violet](Screenshots/Violet.png)
 
 
 ## 🔧 Setup Instructions
