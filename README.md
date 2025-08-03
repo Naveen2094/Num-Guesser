@@ -39,10 +39,3 @@ The **Futuristic AI Number Guesser** is an intelligent web-based game where play
 
 ![Violet](Screenshots/Violet.png)
 
-
-## 🔧 Setup Instructions
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/Naveen2094/Num-guesser.git
-
