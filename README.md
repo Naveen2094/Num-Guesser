@@ -39,3 +39,23 @@ The **Futuristic AI Number Guesser** is an intelligent web-based game where play
 
 ![Violet](Screenshots/Violet.png)
 
+
+## 📱 Mobile Version
+
+The game is also available as a mobile app built with **React Native + Expo**.
+
+### Features
+
+- Same AI guessing logic as the web version
+- Futuristic particle background
+- Theme switching (Cyan / Red / Purple)
+- TTS using Expo Speech
+- Beep + success sounds
+- Adaptive difficulty
+
+### How to Run
+
+```bash
+npm install
+npx expo start
+
