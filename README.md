@@ -4,58 +4,84 @@ The **Futuristic AI Number Guesser** is an intelligent web-based game where play
 
 ## 🚀 Features
 
-- 🤖 AI that guesses the number intelligently (Minimax or probability-based logic)
-- 🎮 Human vs AI interactive gameplay
-- 🧠 Adaptive difficulty
-- 📊 Score tracking and analytics
-- 💻 Modern, responsive UI with smooth animations
-- 🔮 Hints, retries, and customizable guess range
-- 🌙 Dark mode and futuristic design aesthetics
+* **🤖 Smart AI Opponent:** Uses probability-based logic (Minimax/Heuristics) to guess efficiently.
+* **🎮 Interactive Gameplay:** Engage in a Human vs. AI turn-based battle.
+* **🧠 Adaptive Difficulty:** Choose from Beginner, Intermediate, or Expert levels.
+* **📊 Live Analytics:** Real-time score tracking and game stats.
+* **💻 Modern UI:** Responsive design with smooth animations and transitions.
+* **🔮 Helper Tools:** In-game hints, retries, and customizable number ranges.
+* **🌙 Futuristic Aesthetics:** Dark mode with neon accents and custom themes.
+
+---
 
 ## 🛠️ Technologies Used
 
-- **Frontend**: HTML, CSS, JavaScript
-- **AI Logic**: JavaScript-based strategy (Minimax / Heuristics)
-- **UI/UX**: Responsive layout, custom themes, animation effects
+| Category | Tech Stack |
+| :--- | :--- |
+| **Frontend** | HTML5, CSS3, JavaScript (ES6+) |
+| **AI Logic** | JavaScript-based Strategy (Binary Search / Heuristics) |
+| **UI/UX** | Responsive Flexbox/Grid, CSS Animations |
 
+---
 
 ## 🎮 How to Play
 
-1. The system generates a hidden number between a chosen range (e.g., 1 to 100).
-2. You and the AI take turns guessing the number.
-3. After each guess, the game gives a hint ("Too High" / "Too Low").
-4. First to guess correctly wins!
+1.  **Start Game:** The system generates a hidden secret number within a chosen range (e.g., 1 to 100).
+2.  **Take Turns:** You and the AI alternate making guesses.
+3.  **Receive Feedback:** After every guess, the interface signals if the number is **"Too High"** or **"Too Low"**.
+4.  **Win:** The first entity (Human or AI) to guess the exact number wins the round!
+
+---
 
 ## 🧠 AI Behavior
 
-- Uses optimized guessing logic.
-- Can be set to beginner, intermediate, or expert levels.
-- Learns from your guesses and patterns (based on settings).
+The AI isn't just random; it plays to win!
+* **Optimized Logic:** Uses binary search algorithms to narrow down possibilities half as fast as a human might.
+* **Learning Mode:** Adjusts behavior based on the selected difficulty level.
+* **Pattern Recognition:** Simulates "thinking" time for a realistic opponent feel.
+
+---
 
 ## 📸 Screenshots
-![Neon Cyan](Screenshots/NeonCyan.png)
 
-![Neon Red](Screenshots/NeonRed.png)
+| Neon Cyan Theme | Neon Red Theme |
+| :---: | :---: |
+| ![Neon Cyan](Screenshots/NeonCyan.png) | ![Neon Red](Screenshots/NeonRed.png) |
 
-![Violet](Screenshots/Violet.png)
+| Violet Theme |
+| :---: |
+| ![Violet](Screenshots/Violet.png) |
 
+---
 
 ## 📱 Mobile Version
 
-The game is also available as a mobile app built with **React Native + Expo**.
+The game is also available as a cross-platform mobile app built with **React Native + Expo**.
 
-### Features
+### Mobile Features
+* 📱 **Futuristic Backgrounds:** Animated particle effects.
+* 🎨 **Theme Switching:** Toggle between Cyan, Red, and Purple themes on the fly.
+* 🗣️ **Text-to-Speech:** Game announces results using `Expo Speech`.
+* 🔊 **Sound Effects:** Beeps and success chimes for immersion.
 
-- Same AI guessing logic as the web version
-- Futuristic particle background
-- Theme switching (Cyan / Red / Purple)
-- TTS using Expo Speech
-- Beep + success sounds
-- Adaptive difficulty
+### ⚙️ How to Run Mobile App
 
-### How to Run
+Ensure you have Node.js installed, then run:
 
 ```bash
+# Install dependencies
 npm install
+
+# Start the Expo development server
 npx expo start
 
+```
+---
+
+## 📄 License
+
+This project is developed for educational purposes.
+
+## 📬 Contact
+
+**Naveen Kumar P** [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/naveenkumarp20/)
